@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>JARVIS — Command Console</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&amp;family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&amp;display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="console.css" />
+  <link rel="icon" href="data:,">
+</head>
+<body>
+<div id="stage" data-screen-label="Command Console">
+  <canvas id="orb-canvas"></canvas>
+  <div id="orb-fallback" hidden=""></div>
+  <svg id="health-arc" viewBox="0 0 200 200" aria-hidden="true"></svg>
+
+  <header class="hud">
+    <div class="brand">
+      <span class="brand-name">JARVIS</span>
+      <span class="brand-sub">KERNEL ONLINE · LOCALHOST:5588</span>
+    </div>
+    <div class="hud-right">
+      <div id="health-badges"></div>
+      <div id="clock"></div>
+      <button id="stream-toggle" type="button"><span class="pip"></span>ACTIVITY</button>
+    </div>
+  </header>
+
+  <div id="state-label"><span id="state-dot"></span><span id="state-text">IDLE</span></div>
+
+  <div id="dialogue">
+    <div id="transcript"></div>
+    <div id="response"></div>
+  </div>
+
+  <div id="confirm-bar" hidden="">
+    <div id="confirm-msg"></div>
+    <div class="confirm-actions">
+      <button id="btn-confirm" type="button">CONFIRM</button>
+      <button id="btn-cancel" type="button">CANCEL</button>
+    </div>
+  </div>
+
+  <div id="voice-scope">
+    <canvas id="scope-canvas"></canvas>
+    <div class="scope-legend">
+      <span class="lg lg-mic"><i></i>MIC</span>
+      <span class="lg lg-ear"><i></i>EAR</span>
+      <span class="lg lg-voice"><i></i>VOICE</span>
+    </div>
+  </div>
+
+  <form id="command-bar">
+    <span class="prompt">›</span>
+    <input id="command-input" autocomplete="off" spellcheck="false" placeholder="Type a command — or hold RIGHT-CTRL to speak" />
+    <span class="cmd-hint">ENTER ↵</span>
+  </form>
+
+  <aside id="stream-panel">
+    <header>
+      <span>ACTIVITY STREAM</span>
+      <button id="stream-close" type="button">×</button>
+    </header>
+    <div id="stream-list"></div>
+  </aside>
+
+  <div id="toasts"></div>
+  <div id="vignette"></div>
+</div>
+
+<script src="vendor/three.min.js"></script>
+<script src="vendor/signalr.min.js"></script>
+<script src="orb.js"></script>
+<script src="sim.js"></script>
+<script src="live.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

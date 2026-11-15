@@ -1,0 +1,72 @@
+# ---- .NET build output -------------------------------------------------------
+bin/
+obj/
+*.user
+*.suo
+.vs/
+.vscode/
+.idea/
+TestResults/
+*.binlog
+
+# ---- Runtime data (created by the kernel; never commit) ----------------------
+# SQLite database, WAL files and backups
+data/
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+# Secret store and one-shot secret import file
+secrets.bin
+setup-secrets.json
+# TLS material (the LAN endpoint generates its own certificate at runtime)
+*.pfx
+*.p12
+*.pem
+*.key
+*.crt
+# Environment files
+.env
+.env.*
+!.env.example
+# Local overrides for integrations (copy appsettings.Live.example.json and keep it local)
+appsettings.Local.json
+appsettings.Live.json
+
+# ---- Voice: models, engines, caches, recordings -----------------------------
+voice/cache/
+voice/tts/
+voice/kokoro/models/
+voice/stt/models/
+*.onnx
+*.bin
+*.wav
+*.mp3
+*.ogg
+*.flac
+**/.venv/
+**/venv/
+**/__pycache__/
+*.pyc
+
+# ---- Agent and tool state ----------------------------------------------------
+.claude/
+.codex/
+.playwright-mcp/
+playwright-report/
+test-results/
+data/outbox/
+data/screenshots/
+
+# ---- Logs and OS noise -------------------------------------------------------
+*.log
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# ---- Large media stays out of git (video is linked from the README) ---------
+*.mp4
+*.webm
+*.mov
+*.gif
+!docs/assets/*.gif

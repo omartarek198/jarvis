@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>JARVIS — War Room</title>
+<style>
+  /* Placeholder war room — to be replaced by Claude Design. Real data only. */
+  :root { --bg:#06090f; --panel:#0b1220; --line:#15233f; --cyan:#3ee0ff; --dim:#5d7290; --txt:#c9d8ee;
+          --good:#5dffa9; --warn:#ffd35d; --bad:#ff5d6c; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--txt); font:13px/1.5 'Cascadia Code', Consolas, monospace; }
+  header { padding:14px 22px; border-bottom:1px solid var(--line); display:flex; gap:18px; align-items:baseline; }
+  h1 { font-size:14px; letter-spacing:5px; color:var(--cyan); margin:0; }
+  #sub { color:var(--dim); }
+  main { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:14px; padding:18px 22px; max-width:1400px; margin:0 auto; }
+  .card { background:var(--panel); border:1px solid var(--line); border-radius:6px; padding:14px 16px; }
+  .card h2 { margin:0 0 10px; font-size:11px; letter-spacing:3px; color:var(--dim); font-weight:600; text-transform:uppercase; }
+  .big { font-size:46px; font-weight:700; }
+  .item { padding:3px 0; border-bottom:1px dotted #101b30; }
+  .sev-P1 { color:var(--bad); } .sev-P2 { color:var(--warn); }
+  .status-done { color:var(--good); } .status-failed { color:var(--bad); } .status-running { color:var(--cyan); }
+  #action { font-size:15px; color:var(--cyan); }
+  .muted { color:var(--dim); }
+</style>
+</head>
+<body>
+<header><h1>WAR ROOM</h1><span id="sub">loading…</span></header>
+<main id="grid" hidden>
+  <div class="card"><h2>Launch readiness</h2><div class="big" id="score">—</div><div id="action" class="muted"></div></div>
+  <div class="card"><h2>Repository</h2><div id="git" class="muted">no repo registered</div><div id="commits"></div></div>
+  <div class="card"><h2>Tester issues</h2><div id="issues" class="muted">none</div></div>
+  <div class="card"><h2>Playwright</h2><div id="pw" class="muted">no runs yet</div></div>
+  <div class="card"><h2>Agent runs</h2><div id="agents" class="muted">none</div></div>
+  <div class="card"><h2>Tasks &amp; commitments</h2><div id="work" class="muted"></div></div>
+</main>
+<script>
+const slug = new URLSearchParams(location.search).get('p') || 'northwind';
+function el(id){ return document.getElementById(id); }
+function items(list, fmt){ return list && list.length ? list.map(x => `<div class="item">${fmt(x)}</div>`).join('') : null; }
+// Everything below comes from git, tester notes or agent output: escape before inserting.
+function esc(s) { return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+async function load() {
+  const r = await fetch(`/api/projects/${slug}/warroom`);
+  if (!r.ok) { el('sub').textContent = `unknown project: ${slug}`; return; }
+  const w = await r.json();
+  el('sub').textContent = `${w.project.name} — ${w.project.summary}`;
+  el('grid').hidden = false;
+  const s = w.readinessScore;
+  el('score').textContent = s;
+  el('score').style.color = s >= 80 ? 'var(--good)' : s >= 50 ? 'var(--warn)' : 'var(--bad)';
+  el('action').textContent = '▶ ' + w.suggestedAction;
+  if (w.git) {
+    el('git').innerHTML = `branch <b>${esc(w.git.branch)}</b> — ${w.git.clean ? '<span class="status-done">clean</span>' : `<span class="status-failed">${w.git.dirtyCount} dirty files</span>`}`;
+    el('commits').innerHTML = items(w.recentCommits, c => `<span class="muted">${esc(c)}</span>`) || '';
+  }
+  el('issues').innerHTML = items(w.testerIssues.items, i => `<span class="sev-${esc(i.severity)}">[${esc(i.severity)}]</span> ${esc(i.text)}`)
+    || `<span class="muted">inbox empty (${w.testerIssues.open} open)</span>`;
+  if (w.playwright) el('pw').textContent = w.playwright.summary;
+  el('agents').innerHTML = items(w.agentRuns, a =>
+    `<span class="status-${esc(a.status)}">${esc(a.agent)} · ${esc(a.promptTemplate)} · ${esc(a.status)}</span><br><span class="muted">${esc((a.resultSummary||'').slice(0,120))}</span>`) || '<span class="muted">none yet</span>';
+  el('work').innerHTML =
+    `<div class="item">${w.tasks.open} open tasks, ${w.tasks.blocked} blocked</div>` +
+    `<div class="item">${w.commitments.open} open commitments, ${w.commitments.overdue} overdue</div>` +
+    (items(w.tasks.items, t => `□ ${esc(t.title)}`) || '');
+}
+load(); setInterval(load, 8000);
+</script>
+</body>
+</html>

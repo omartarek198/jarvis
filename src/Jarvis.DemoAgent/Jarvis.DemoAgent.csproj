@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    DEMO ADAPTER — not part of the live system.
+    A stand-in for the `claude` / `codex` CLIs used by the public demo mode. The kernel's real
+    AgentService launches it as a supervised child process with the same arguments it would pass
+    to Claude Code or Codex, and it answers in the same output formats. It never calls a model
+    and never modifies files.
+  -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>jarvis-demo-agent</AssemblyName>
+    <RootNamespace>Jarvis.DemoAgent</RootNamespace>
+  </PropertyGroup>
+
+</Project>

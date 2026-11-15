@@ -1,0 +1,23 @@
+{
+  // System phrases pre-rendered into voice/cache/<profile>/ for instant, consistent playback.
+  // Regenerate with: "regenerate voice cache" (voice) or TtsService.RegenerateCacheAsync().
+  // Only short, non-private phrases belong here — long replies are never cached.
+  "phrases": [
+    "Yes, sir.",
+    "Yes?",
+    "Listening.",
+    "Go ahead.",
+    "Running.",
+    "Done.",
+    "Confirmed.",
+    "Cancelled.",
+    "Awaiting approval.",
+    "Running Codex.",
+    "Codex finished.",
+    "Claude is still working.",
+    "War room online.",
+    "Stopping all activity.",
+    "Typed.",
+    "Dictation off."
+  ]
+}

@@ -1,0 +1,162 @@
+{
+  // JARVIS voice profiles — hand-editable, hot-reloaded (no kernel restart needed).
+  // Engines: "kokoro" (neural sidecar :5593) or "piper" (local VITS). Whatever you pick,
+  // the chain below it stays as fallback: kokoro -> piper -> Windows SAPI -> text-only.
+  // Kokoro voices: af_heart, af_bella, am_adam, am_michael, am_onyx, am_fenrir,
+  //                bm_daniel, bm_fable, bm_lewis, bm_george (see docs/VOICE.md to add more).
+  "version": 1,
+
+  "aliases": {
+    "jarvis": "default",          // legacy setting value keeps working
+    "normal": "default",
+    "standard": "default",
+    "premium": "briefing",
+    "russian": "boris",
+    "demo_russian": "boris"
+  },
+
+  "selection": {
+    // Replies longer than this auto-escalate from default/fast to the briefing profile
+    "briefingMinChars": 280,
+    "briefingProfile": "briefing"
+  },
+
+  // Texts at or under this length are cache-eligible (longer replies are never cached)
+  "cacheMaxChars": 100,
+
+  // Pronunciation fixes applied before the built-in rules (built-ins live in SpeechTextFormatter)
+  "lexicon": {
+    "SQLite": "S Q Lite"
+  },
+
+  "profiles": {
+    "default": {
+      "description": "Daily driver — calm, premium, fast enough for conversation.",
+      "engine": "kokoro",
+      "voice": "bm_fable",
+      "speed": 0.96,
+      "formatter": true,
+      "maxSpokenChars": 420,
+      "chunking": { "enabled": true, "minSplitChars": 160, "maxChunkChars": 220, "sentenceGapMs": 240, "paragraphGapMs": 480, "leadInMs": 60, "tailMs": 140 },
+      "mastering": true,
+      "cache": true,
+      "autoEscalate": true
+    },
+
+    "fast": {
+      "description": "Snappy operational acks — slightly quicker delivery, instant cached phrases.",
+      "engine": "kokoro",
+      "voice": "bm_fable",
+      "speed": 1.04,
+      "formatter": true,
+      "maxSpokenChars": 300,
+      "chunking": { "enabled": true, "minSplitChars": 200, "maxChunkChars": 220, "sentenceGapMs": 200, "paragraphGapMs": 380, "leadInMs": 40, "tailMs": 100 },
+      "mastering": true,
+      "cache": true,
+      "autoEscalate": true
+    },
+
+    "briefing": {
+      "description": "Long-form: briefings, agent and meeting summaries. Slower, longer pauses, longer cap.",
+      "engine": "kokoro",
+      "voice": "bm_fable",
+      "speed": 0.90,
+      "formatter": true,
+      "maxSpokenChars": 1200,
+      "chunking": { "enabled": true, "minSplitChars": 120, "maxChunkChars": 220, "sentenceGapMs": 300, "paragraphGapMs": 600, "leadInMs": 80, "tailMs": 180 },
+      "mastering": true,
+      "cache": false,
+      "autoEscalate": false
+    },
+
+    "alert": {
+      "description": "Warnings and confirm prompts — firmer voice, never escalates.",
+      "engine": "kokoro",
+      "voice": "bm_george",
+      "speed": 1.00,
+      "formatter": true,
+      "maxSpokenChars": 280,
+      "chunking": { "enabled": true, "minSplitChars": 160, "maxChunkChars": 220, "sentenceGapMs": 240, "paragraphGapMs": 480, "leadInMs": 60, "tailMs": 140 },
+      "mastering": true,
+      "cache": true,
+      "autoEscalate": false
+    },
+
+    "boris": {
+      "description": "Russian-accent fun profile (Piper ru voice when installed). Never the daily default.",
+      "engine": "piper",
+      "piperVoices": ["ru_RU", "ru"],
+      "speed": 1.0,
+      "formatter": true,
+      "maxSpokenChars": 420,
+      "chunking": { "enabled": true, "minSplitChars": 160, "maxChunkChars": 220, "sentenceGapMs": 220, "paragraphGapMs": 440, "leadInMs": 60, "tailMs": 120 },
+      "mastering": false,
+      "cache": false,
+      "autoEscalate": false
+    },
+
+    "council.ceo": {
+      "description": "Council CEO lens — confident executive.",
+      "engine": "kokoro", "voice": "am_onyx", "speed": 1.0,
+      "formatter": true, "maxSpokenChars": 420,
+      "chunking": { "enabled": true, "minSplitChars": 160, "maxChunkChars": 220, "sentenceGapMs": 240, "paragraphGapMs": 480, "leadInMs": 60, "tailMs": 140 },
+      "mastering": true, "cache": false, "autoEscalate": false
+    },
+    "council.cto": {
+      "description": "Council CTO lens — precise, technical, neutral.",
+      "engine": "kokoro", "voice": "bm_daniel", "speed": 0.98,
+      "formatter": true, "maxSpokenChars": 420,
+      "chunking": { "enabled": true, "minSplitChars": 160, "maxChunkChars": 220, "sentenceGapMs": 240, "paragraphGapMs": 480, "leadInMs": 60, "tailMs": 140 },
+      "mastering": true, "cache": false, "autoEscalate": false
+    },
+    "council.operator": {
+      "description": "Council Operator lens — faster, tactical, direct.",
+      "engine": "kokoro", "voice": "am_michael", "speed": 1.06,
+      "formatter": true, "maxSpokenChars": 420,
+      "chunking": { "enabled": true, "minSplitChars": 200, "maxChunkChars": 220, "sentenceGapMs": 200, "paragraphGapMs": 380, "leadInMs": 40, "tailMs": 100 },
+      "mastering": true, "cache": false, "autoEscalate": false
+    },
+    "council.investor": {
+      "description": "Council Investor lens — cold, analytical.",
+      "engine": "kokoro", "voice": "bm_george", "speed": 0.97,
+      "formatter": true, "maxSpokenChars": 420,
+      "chunking": { "enabled": true, "minSplitChars": 160, "maxChunkChars": 220, "sentenceGapMs": 260, "paragraphGapMs": 480, "leadInMs": 60, "tailMs": 140 },
+      "mastering": true, "cache": false, "autoEscalate": false
+    },
+    "council.health": {
+      "description": "Council Health Coach lens — warm but firm.",
+      "engine": "kokoro", "voice": "af_heart", "speed": 0.98,
+      "formatter": true, "maxSpokenChars": 420,
+      "chunking": { "enabled": true, "minSplitChars": 160, "maxChunkChars": 220, "sentenceGapMs": 240, "paragraphGapMs": 480, "leadInMs": 60, "tailMs": 140 },
+      "mastering": true, "cache": false, "autoEscalate": false
+    },
+    "council.skeptic": {
+      "description": "Council Skeptic lens — dry, sharper.",
+      "engine": "kokoro", "voice": "bm_lewis", "speed": 0.99,
+      "formatter": true, "maxSpokenChars": 420,
+      "chunking": { "enabled": true, "minSplitChars": 160, "maxChunkChars": 220, "sentenceGapMs": 240, "paragraphGapMs": 480, "leadInMs": 60, "tailMs": 140 },
+      "mastering": true, "cache": false, "autoEscalate": false
+    },
+    "council.future": {
+      "description": "Council Future You lens — slower, reflective.",
+      "engine": "kokoro", "voice": "am_adam", "speed": 0.90,
+      "formatter": true, "maxSpokenChars": 420,
+      "chunking": { "enabled": true, "minSplitChars": 120, "maxChunkChars": 220, "sentenceGapMs": 300, "paragraphGapMs": 600, "leadInMs": 80, "tailMs": 180 },
+      "mastering": true, "cache": false, "autoEscalate": false
+    },
+    "council.customer": {
+      "description": "Council Customer Voice lens — practical, grounded.",
+      "engine": "kokoro", "voice": "af_bella", "speed": 0.97,
+      "formatter": true, "maxSpokenChars": 420,
+      "chunking": { "enabled": true, "minSplitChars": 160, "maxChunkChars": 220, "sentenceGapMs": 240, "paragraphGapMs": 480, "leadInMs": 60, "tailMs": 140 },
+      "mastering": true, "cache": false, "autoEscalate": false
+    },
+    "council.sales": {
+      "description": "Council Sales lens — energetic but not annoying.",
+      "engine": "kokoro", "voice": "am_fenrir", "speed": 1.03,
+      "formatter": true, "maxSpokenChars": 420,
+      "chunking": { "enabled": true, "minSplitChars": 200, "maxChunkChars": 220, "sentenceGapMs": 200, "paragraphGapMs": 380, "leadInMs": 40, "tailMs": 100 },
+      "mastering": true, "cache": false, "autoEscalate": false
+    }
+  }
+}
